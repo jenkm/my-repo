@@ -1,0 +1,83 @@
+---
+title: "ggplot_intro"
+author: "Jen"
+date: "13 July 2016"
+output: html_document
+---
+
+## Plan - ggplot
+Load the libraries & learn ggplot2
+
+Outside the chunks we write in Markdown language. 
+summary(cars) here is just words, not a command.
+# hashtags here mean headers
+
+```{r}
+# Inside the chunks, we are writing in R code. hashtags here mean comments.
+
+summary(cars) # here is a command that we can execute.
+```
+
+```{r}
+install.packages("dplyr")
+```
+
+## Load libraries
+```{r}
+library(dplyr)
+library(gapminder) #install.packages("ggplot2")
+library(ggplot2)
+
+## subset our data
+
+g <- gapminder %>%
+  filter(year ==2007) %>%
+  mutate(pop_m = pop/1e6)
+```
+
+# My first plot
+
+```{r}
+# ggplot needs:  ggplot(data, aes(what's x, what's y)) + what_kind_of_plot ()
+s <- ggplot(g, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+
+s
+```
+
+# My second plot 
+```{r}
+s2 = s + aes(size = pop_m)
+s2
+
+s3 = s2 + aes(color = continent)
+s3
+```
+
+# Nice piped version
+
+```{r}
+s <- ggplot(g, aes(x= gdpPercap, y = lifeExp)) +
+  geom_point() +
+  aes(size = pop_m) +
+  aes(color = continent) +
+  ggtitle("Health and Wealth of nations for 2007") +
+  xlab("GDP per capita (USD/year)") +
+  ylab("Life Expectency (years)") +
+  scale_color_discrete("Continent") +
+  scale_size_continuous("Population (M)")
+s
+```
+
+
+```{r}
+# boxplot
+
+b <- ggplot(g, aes(x = continent, y = lifeExp)) +
+  geom_boxplot() +
+  aes(fill=continent)+
+  theme(legend.position ="none")
+b
+```
+
+
+
